@@ -11,8 +11,8 @@ import android.widget.Spinner
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 
-class HabitEditorActivity : ComponentActivity() {
-    
+class HabitEditorActivity() : ComponentActivity(){
+
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,13 +33,21 @@ class HabitEditorActivity : ComponentActivity() {
         if(habitListElement!=null)
         {
             if (saveListOfHabitListElement != null) {
-                saveButtonClickListenerUploadHabitInfo(saveListOfHabitListElement, habitListElement)
+                saveButtonClickListenerUploadHabitInfo(saveListOfHabitListElement, habitListElement,
+                    saveListOfHabitListElement,
+                    titleEditText,
+                    descriptionEditText,
+                    prioritySpinner,
+                    typeRadioGroup,
+                    frequencyEditText,
+                    periodicityEditText,
+                    saveButton
+                )
             }
         }
         else
         {
-            saveButtonClickListenerNewHabit(
-                saveListOfHabitListElement,
+            saveButtonClickListenerNewHabit(saveListOfHabitListElement,
                 titleEditText,
                 descriptionEditText,
                 prioritySpinner,
@@ -52,16 +60,37 @@ class HabitEditorActivity : ComponentActivity() {
         }
     }
 
-    private fun saveButtonClickListenerUploadHabitInfo(saveListOfHabitListElement: ArrayList<HabitListElement>, habitListElement: HabitListElement) {
-        val intent = Intent(this, HabitListActivityLauncher::class.java)
-        //saveListOfHabitListElement[0].habitInfo = HabitInfo("1337", "1337", "1337", "1337", "1337", color = Color.RED)
-        for(element in saveListOfHabitListElement){
-            if(element.equals(habitListElement)){
-                element.habitInfo = HabitInfo("1337", "1337", "1337", "1337", "1337", color = Color.RED)
+    private fun saveButtonClickListenerUploadHabitInfo(
+        saveListOfHabitListElement: ArrayList<HabitListElement>,
+        habitListElement: HabitListElement,
+        saveListOfHabitListElement1: java.util.ArrayList<HabitListElement>,
+        titleEditText: EditText,
+        descriptionEditText: EditText,
+        prioritySpinner: Spinner,
+        typeRadioGroup: RadioGroup,
+        frequencyEditText: EditText,
+        periodicityEditText: EditText,
+        saveButton: Button
+    ) {
+        saveButton.setOnClickListener{
+            val intent = Intent(this, HabitListActivityLauncher::class.java)
+            //saveListOfHabitListElement[0].habitInfo = HabitInfo("1337", "1337", "1337", "1337", "1337", color = Color.RED)
+            for(element in saveListOfHabitListElement){
+                if(element.equals(habitListElement)){
+                    //element.habitInfo = HabitInfo("1337", "1337", "1337", "1337", "1337", color = Color.RED)
+                    element.habitInfo = getHabitInfo(
+                        titleEditText,
+                        descriptionEditText,
+                        prioritySpinner,
+                        typeRadioGroup,
+                        frequencyEditText,
+                        periodicityEditText
+                    )
+                }
             }
+            intent.putParcelableArrayListExtra("habitElementList", ArrayList(saveListOfHabitListElement))
+            startActivity(intent)
         }
-        intent.putParcelableArrayListExtra("habitElementList", ArrayList(saveListOfHabitListElement))
-        startActivity(intent)
     }
 
     private fun saveButtonClickListenerNewHabit(
@@ -112,10 +141,10 @@ class HabitEditorActivity : ComponentActivity() {
 
         val selectedTypeRadioButtonId = typeRadioGroup.checkedRadioButtonId
         val selectedTypeRadioButton = findViewById<RadioButton>(selectedTypeRadioButtonId)
-        val selectedType = selectedTypeRadioButton?.text?.toString() ?: "watafak"
+        val selectedType = selectedTypeRadioButton?.text?.toString() ?: "Нейтральная"
 
-        //TODO норм обработку сделать
-        return HabitInfo(title, description, "1337", selectedType, frequency, color = Color.RED)
+        //TODO норм обработку сделать у приоритета
+        return HabitInfo(title, description, "?????", selectedType, frequency, color = Color.RED)
     }
 
 }

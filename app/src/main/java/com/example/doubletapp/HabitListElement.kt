@@ -136,7 +136,7 @@ class HabitListElement(
             }
         }
     }
-
+    //
     private fun updateElement(context: Context, habitList: List<HabitListElement>){
         val intent = Intent(context, HabitEditorActivity::class.java)
         intent.putExtra("element", this)

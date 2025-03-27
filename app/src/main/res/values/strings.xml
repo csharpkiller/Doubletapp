@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Doubletapp</string>
+    <string name="title_activity_habit_editor">HabitEditorActivity</string>
+</resources>
